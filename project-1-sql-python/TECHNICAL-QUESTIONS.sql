@@ -42,7 +42,7 @@ SOLUTION:
 SELECT p1.*
 FROM payments p1
 WHERE NOT EXISTS (
-  SELECT 1
+  SELECT *
   FROM payments p2
   WHERE p2.order_id = p1.order_id
   AND p2.payment_amount = p1.payment_amount
