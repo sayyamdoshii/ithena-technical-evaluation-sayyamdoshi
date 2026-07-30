@@ -25,4 +25,10 @@ IN vs. NOT EXISTS for finding orders with no matching payment — specifically a
 handling and performance? Which would you default to, and why?
 
 ANSWER: 
+All three ways try to find orders that don't have a matching payment, but they don't all handle "NULLs" the same way.
+"NOT IN" is the risky one. If the list of payments being checked has even one NULL value in it, NOT IN can quietly return no results at all, even when there clearly are unmatched orders. It doesn't throw an error, it just gives you a wrong, empty answer, which makes it dangerous.
+"NOT EXISTS" and the "LEFT JOIN" with "WHERE IS NULL" method both handle NULLs safely, since they check row by row instead of comparing against a list.
 
+I would go with "NOT EXISTS". It's usually faster since it can stop looking as soon as it finds one match, and it's easier to read, it basically says "find orders where no matching payment exists," which is more straightforward than a LEFT JOIN that needs an extra filter afterward to work.
+
+---------------------------------------------------------------------------------------------------------------------------------------
