@@ -5,7 +5,6 @@ with payments minus refunds, within a tolerance of ± 1.
 */
 
 SOLUTION:
-
 SELECT
   o.order_id,
   ov.order_value,
@@ -13,6 +12,45 @@ SELECT
   r.total_refunded
 FROM orders o
 JOIN 
+(
+SELECT
+      order_id,
+      SUM(payment_amount) AS total_paid
+    FROM payments
+    WHERE payment_status = 'completed'
+    GROUP BY order_id
+  ) p
+  ON p.order_id = o.order_id
+JOIN
+(
+SELECT
+      order_id,
+      SUM(qty * unit_price * (1 - discount_pct)) AS order_value
+    FROM order_items
+    GROUP BY order_id
+  ) ov
+  ON ov.order_id = o.order_id
+JOIN
+(
+SELECT
+      order_id,
+      SUM(payment_amount) AS total_paid
+    FROM payments
+    WHERE payment_status = 'completed'
+    GROUP BY order_id
+  ) p
+  ON p.order_id = o.order_id
+JOIN
+  (
+    SELECT
+      order_id,
+      SUM(refund_amount) AS total_refunded
+    FROM refunds
+    GROUP BY order_id
+  ) r
+  ON r.order_id = o.order_id
+WHERE
+  ABS(ov.order_value - (p.total_paid - r.total_refunded)) > 1;
 
 
 
