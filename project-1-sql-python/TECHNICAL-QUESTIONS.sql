@@ -30,6 +30,15 @@ GROUP BY order_id
 ) r ON r.order_id = o.order_id
 WHERE ABS(ov.order_value - (p.total_paid - r.total_refunded)) > 1;
 
+----------------------------------------------------------------------------------------------------------------------------------------
+/*
+QUESTION 5: The payments table has duplicate rows caused by a gateway retry bug — same order, same
+amount, timestamps within 60 seconds of each other. Write the de-duplication logic (not
+DISTINCT) that must run before Technical Question 1.
+/*
+
+SOLUTION:
+
 
 
 
