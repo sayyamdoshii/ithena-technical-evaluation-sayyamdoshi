@@ -26,4 +26,16 @@ This matters a lot for cohort retention, because retention isn't something you c
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 
+QUESTION 9: A stakeholder wants the dashboard to auto-refresh every 15 minutes from a source with 10M+
+rows. What would you check or change in your data model before agreeing to that refresh
+cadence?
+
+ANSWER:
+
+Before agreeing to a 15 minute refresh on a source that large, I'd first check how the data model is built. If there are a lot of calculated columns instead of measures, or complex relationships between many tables, those can seriously slow down refresh time, since calculated columns get recalculated every single refresh across all 10 million plus rows.
+I'd also check whether the dashboard is pulling in more data than it actually needs. If it's importing full historical data every time instead of just the recent data that changes, that's wasted processing. Using something like incremental refresh, where only new or changed rows get updated instead of reloading everything, would make a big difference at this scale.
+I'd also look at how many visuals and how much detail is on the dashboard itself, since a very detailed dashboard with many charts querying live data can slow things down separately from the refresh itself.
+Finally, I'd check if the source system can even handle being queried that often without slowing down other processes relying on it. If 15 minutes isn't realistic, I'd rather be upfront about a more reasonable refresh time than promise something that causes performance issues later.
+
+---------------------------------------------------------------------------------------------------------------------------------------
 
