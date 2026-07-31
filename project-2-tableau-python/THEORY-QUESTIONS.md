@@ -11,4 +11,18 @@ Along with the single number, I'd also show how churn is trending over time, a b
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-QUESTION 8: 
+QUESTION 8: What's the difference between a calculated column and a measure in Power BI (or a calculated
+field vs. an LOD expression in Tableau), and why does that distinction matter for a cohort retention
+calculation specifically?
+
+ANSWER:
+
+A calculated column in Power BI works on one row at a time, and the answer gets saved permanently in the table. A measure doesn't get saved at all, it gets calculated fresh every time, based on whatever filters are being used in the chart. In Tableau, it's the same idea, a calculated field usually works row by row, while an LOD expression lets you decide exactly what level the calculation happens at, no matter how the chart is filtered.
+
+This matters a lot for cohort retention, because retention isn't something you can figure out from just one row. It depends on comparing a customer's activity across several months, compared to when they first joined.
+
+"For example, assume we have a customers table with signup_month, and an activity table with activity_month. If I used a calculated column to mark someone as "retained," that answer would get locked in based on the row it was created on, and it wouldn't update correctly if someone later filters the dashboard down to just one month or one group of customers. A measure, or an LOD expression in Tableau, can recalculate retention correctly every time, no matter what someone clicks on in the dashboard, which is exactly what a retention report needs to work properly."
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+
