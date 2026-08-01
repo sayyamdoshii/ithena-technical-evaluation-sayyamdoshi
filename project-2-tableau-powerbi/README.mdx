@@ -1,1 +1,29 @@
+# Project 2: Tableau
 
+## What this is
+Used Tableau Public to dig into subscription data for a fictional SaaS business, 5,000 synthetic customers. Covers retention, revenue retention, and churn.
+
+## Data files
+- `subscriptions.csv` (from `generate_data.py`): customer id, plan tier, start/end dates, MRR, region, acquisition channel, downgrade flag and date
+- `mrr_history.csv` (from `generate_mrr_history.py`): monthly MRR per customer
+- `nrr_waterfall.csv` (from `nrr_waterfall.py`): New/Expansion/Contraction/Churned totals by month
+
+## What's in the dashboards
+
+**Cohort Retention Matrix**
+- Groups customers by signup month, tracks how many stick around each month after
+- Used a WINDOW_SUM table calc to get this right, an LOD approach kept showing 100% retention everywhere which was wrong
+
+**NRR Waterfall**
+- Breaks down monthly MRR movement into New, Expansion, Contraction, and Churned
+- Numbers reconcile cleanly: for Feb 2024, starting MRR of $17,140 plus $15,770 new plus $740 expansion minus $640 contraction minus $1,350 churned lands exactly on $31,660 ending MRR
+
+**Churn Trends**
+- Splits churn into two types and trends both monthly, side by side
+- Hard churn (red line): customers whose subscription actually ended
+- Soft churn (green line): customers who downgraded but are still active, not gone yet
+- Had to add a downgrade_date field to the data generator for this one, the original downgrade flag was just a yes/no with no date attached, so there was nothing to trend it against
+
+## Tool
+Tableau
+Workbooks are saved as .twbx, screenshots included too so you can see the dashboards without opening Tableau.
