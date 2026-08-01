@@ -14,4 +14,12 @@ ANSWER:
 First, I'd check the Query Profile in Snowsight, since it shows exactly where time is being spent step by step and will usually point straight at the join or a spill to disk as the bottleneck. Second, I'd check whether the warehouse is spilling to local or remote storage during the join, which shows up in the Query Profile as "bytes spilled," since that means the warehouse size is too small for the amount of data being shuffled around, and a bigger warehouse would likely fix it. Third, I'd check QUERY_HISTORY in ACCOUNT_USAGE to see if this query is competing with other queries on the same warehouse, causing it to queue rather than actually run slow, which would point to a concurrency problem rather than a data volume problem.
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+QUESTION 14: What is the difference between Snowflake's result cache, local disk (warehouse) cache, and the
+remote storage layer — and how does understanding this change how you'd explain a “why did
+this query run fast the second time” question to a non-technical stakeholder?
+
+ANSWER:
+These are three different layers, and each one explains a different reason a query might run fast the second time. The result cache is the fastest, if you run the exact same query again with no changes to the underlying data, Snowflake just hands back the answer it already computed, no compute needed at all. The warehouse (local disk) cache is the next layer down, it holds recently used data files on the actual compute nodes, so if you run a similar but not identical query, the warehouse doesn't need to pull that data back from storage. The remote storage layer is the actual home for all your data, and it's the slowest of the three since it involves an actual retrieval over the network. If I were explaining "why did this run fast the second time" to a non-technical stakeholder, I'd probably use an analogy like: the first time you asked a question, someone had to go to the archive room and pull the file. The second time, that file was still sitting on their desk, so they just handed it back to you instantly.
+
+---------------------------------------------------------------------------------------------------------------------------------------
 
