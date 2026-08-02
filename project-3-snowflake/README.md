@@ -1,33 +1,43 @@
 # Project 3: Snowflake
 
-## What this is
-A set of Snowflake questions covering warehouse scaling, query performance troubleshooting, caching layers, and cost/usage analysis using Snowflake's system tables. Some are written explanations, some are SQL queries against ACCOUNT_USAGE views.
+**What it covers:** the difference between scaling a warehouse up vs. out, what to 
+check first when a large join is timing out, the three-layer caching model (result 
+cache, warehouse cache, remote storage), and two SQL queries against Snowflake's 
+system views: finding the most expensive query patterns, and detecting warehouses with 
+auto-suspend thrashing.
 
-## Files
-- `TECHNICAL-QUESTIONS.sql`: the two SQL queries, each with the original question and my assumptions written as a comment block above it
-- `THEORY-QUESTIONS.md`: written answers on scaling, query troubleshooting, and caching
+**Files:**
+- `THEORY-QUESTIONS.md`: written answers on warehouse scaling, query troubleshooting, 
+and the three caching layers
+- `TECHNICAL-QUESTION.sql`: query finding the top 10 most expensive query patterns 
+against QUERY_HISTORY
+- `TECHNICAL-QUESTION-2.sql`: query detecting auto-suspend thrashing against 
+WAREHOUSE_METERING_HISTORY
+- `project-3-results.pdf`: screenshots of both queries executed against a live 
+Snowflake trial account, one returning 10 real rows, the other returning 0 rows 
+(expected, explained below)
 
-## What's covered
+**Tools used:** SQL, tested against a live Snowflake trial account.
 
-**Scaling up vs. scaling out**
-- Explained the difference between making a single warehouse bigger vs. running multiple warehouses in parallel
-- Gave one real scenario for each: scaling up for a single heavy nightly job, scaling out for lots of people querying at once
-
-**Troubleshooting a slow 2-billion-row join**
-- Listed the top 3 things I'd check first: Query Profile in Snowsight, whether the warehouse is spilling to disk, and whether the query is queuing behind others in QUERY_HISTORY
-- Named the specific view/tool for each one
-
-**Result cache vs. warehouse cache vs. remote storage**
-- Walked through the three caching layers and what each one actually is
-- Used a "someone already pulled the file from the archive room" analogy for explaining this to a non-technical stakeholder
-
-**Top 10 most expensive query patterns (SQL)**
-- Query against QUERY_HISTORY that groups similar queries together instead of treating every run as unique
-- Stated a credit-estimation formula, since this table doesn't give you credits directly, only execution time and warehouse size
-
-**Auto-suspend thrashing detection (SQL)**
-- Query against WAREHOUSE_METERING_HISTORY to catch warehouses that keep starting and stopping in short bursts
-- Defined my own threshold for what counts as "thrashing" (3+ short intervals within an hour) and explained why
-
-## A note on execution
-I don't have a Snowflake account set up yet, so these queries were written against the assumed table structure and column names given in the instructions, not tested against live data. I'm being upfront about that rather than pretending otherwise. If needed, I'm happy to sign up for the free trial and actually run these, or walk through the logic of each query out loud.
+**Notable decisions:**
+- Both SQL queries were written against Snowflake's documented `ACCOUNT_USAGE` schema, 
+then signed up for a Snowflake free trial and actually ran both against real Snowflake 
+infrastructure. The expensive-query-patterns query returned 10 real rows of account 
+activity. The thrashing-detection query ran successfully with no errors but returned 0 
+rows, expected, since a brand-new trial account has no real warehouse usage history yet 
+to produce a genuine thrashing pattern.
+- For the "most expensive query patterns" question, I grouped similar queries by 
+truncating query text to a fixed length rather than using complex regex pattern 
+stripping, since a simpler grouping approach is something I can actually explain 
+end-to-end, versus a more clever-looking regex solution I'd struggle to defend if asked 
+about it directly.
+- For the credit estimation, `QUERY_HISTORY` doesn't expose credits directly at the 
+query level, only execution time and warehouse size, so I estimated credits using 
+Snowflake's published per-hour rates by warehouse size (Small = 2 credits/hour, Medium 
+= 4, Large = 8), applied proportionally to execution time. This is a reasonable 
+approximation, not the same as Snowflake's actual metered billing.
+- For the thrashing detection query, I defined "thrashing" as 3 or more short usage 
+intervals (under 5 minutes average) within a single hour, reasoning that occasional 
+restarts are normal, but repeated short-lived activity in the same hour signals the 
+auto-suspend timer is probably set too aggressively for that warehouse's real usage 
+pattern.
