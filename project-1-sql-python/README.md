@@ -7,7 +7,7 @@ A set of SQL and Python exercises covering common data quality and reconciliatio
 - `TECHNICAL-QUESTIONS.sql`: the SQL queries, each with the original question and my assumptions written as a comment block above it
 - `TECHNICAL-PYTHON-QUES.py`: the flag_leakage_orders function
 - `THEORY-QUESTIONS.md`: written answers on near-duplicate detection, the COALESCE pitfall, and anti-join patterns
-- `project-1-results.docx`: screenshots showing the schema being created, sample data inserted, and all three technical questions (the reconciliation query, the dedup logic, and the flag_leakage_orders function) actually executed against that data, with real output, not just written queries
+- `project-1-results.pdf`: screenshots showing the schema being created, sample data inserted, and all three technical questions (the reconciliation query, the dedup logic, and the flag_leakage_orders function) actually executed against that data, with real output, not just written queries
 
 ## What's covered
 
