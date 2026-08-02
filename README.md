@@ -166,7 +166,7 @@ an artifact of how the synthetic dataset was generated, not a real business sign
 ---
 
 ## What this project brought me
-Going in, Snowflake was a complete blank spot for me, and a few Tableau techniques 
+Going in, Snowflake was a learning curve for me, and a few Tableau techniques 
 (table calculations, LOD expressions, reference lines) took more trial and error than I 
 expected. I didn't try to fake my way past the parts I didn't know. Where something 
 didn't work the first time, like the retention matrix returning 100% everywhere, or the 
