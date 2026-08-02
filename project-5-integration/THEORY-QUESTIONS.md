@@ -23,3 +23,28 @@ soft churn as two distinct trends instead of one blended number.
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 
+QUESTION 23: When would you choose to push a calculation into SQL/the warehouse vs. doing it in 
+Python/pandas vs. doing it as a DAX measure/LOD expression in the BI layer? Give one clear 
+rule of thumb.
+
+ANSWER:
+
+My rule of thumb: push it as far upstream as the logic will allow without needing 
+row-by-row conditional branching, and only bring it into the BI layer when it needs to 
+change based on how the user is currently filtering or slicing the dashboard.
+
+SQL/the warehouse is the right place for anything that's a fixed, reusable definition, 
+joins, aggregations, deduplication, filtering out bad rows, things that should be true no 
+matter who's looking at the data or how they've filtered it. Doing this in SQL means every 
+tool downstream (BI, Python, anyone else) gets the same clean answer.
+
+Python/pandas is the right place when the logic is too complex or conditional for SQL to 
+express cleanly, classifying rows into multiple categories based on layered business rules, 
+or when I need to loop through data doing something SQL genuinely can't do in one query.
+
+DAX/LOD in the BI layer is the right place only when the calculation genuinely depends on 
+the user's current view, like a running total that changes based on which date range 
+someone has selected, since that kind of context-dependent logic doesn't make sense to 
+bake into the raw data itself.
+
+---------------------------------------------------------------------------------------------------------------------------------------
