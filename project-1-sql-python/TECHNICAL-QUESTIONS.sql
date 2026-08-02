@@ -20,7 +20,7 @@ JOIN (
 JOIN (
  SELECT order_id, SUM(payment_amount) AS total_paid
  FROM payments
- WHERE payment_status = 'completed'
+ WHERE payment_status = 'success'
  GROUP BY order_id
 ) p ON p.order_id = o.order_id
 JOIN (
