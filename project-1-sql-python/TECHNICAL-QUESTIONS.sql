@@ -39,16 +39,18 @@ DISTINCT) that must run before Technical Question 1.
 
 SOLUTION:
 
-SELECT p1.*
+SELECT p1.payment_id, p1.order_id, p1.payment_amount, p1.payment_date
 FROM payments p1
-WHERE NOT EXISTS (
-  SELECT 1
-  FROM payments p2
-  WHERE p2.order_id = p1.order_id
-  AND p2.payment_amount = p1.payment_amount
-  AND p2.payment_id < p1.payment_id
-  AND ABS (EXTRACT(EPOCH FROM (p1.payment_date - p2.payment_date))) <= 60
-  );
+JOIN payments p2
+ON p1.order_id = p2.order_id
+AND p1.payment_amount = p2.payment_amount
+AND p1.payment_id != p2.payment_id
+AND ABS(strftime('%s', p1.payment_date) - strftime('%s', p2.payment_date)) <= 60
+AND p1.payment_id > p2.payment_id;
+
+
+
+
 ----------------------------------------------------------------------------------------------------------------------------------------
 
 
