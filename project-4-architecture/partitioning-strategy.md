@@ -23,3 +23,26 @@ afterward. Combining both clustering keys means this two-dimensional query patte
 range plus device breakdown, still only touches the specific slice of data it needs.
 
 ----------------------------------------------------------------------------------------------------------------------------------------
+QUESTION 21: Light cloud touch-point (reasoning only, no build required): if raw files land in S3 
+before reaching Snowflake, name the one service you'd use to move data from S3 into 
+Snowflake efficiently, and in 2-3 sentences explain why, over the alternatives (e.g., 
+Snowpipe vs. a scheduled COPY vs. a custom script).
+
+ANSWER:
+
+I'd use Snowpipe. Snowpipe uses event notifications from S3 to detect new files the 
+moment they land, then loads them automatically within minutes, so data is available to 
+query almost immediately after arrival, without anyone needing to trigger anything.
+
+A scheduled COPY command, by comparison, runs on a fixed timer (say, every 15 minutes), 
+so it either wastes compute checking for files that haven't arrived yet, or introduces 
+unnecessary lag if a file lands right after a scheduled run just finished, meaning it 
+could sit unloaded for nearly the full interval before the next check.
+
+A custom script would mean building and maintaining your own logic to watch S3 for new 
+files, trigger a load, handle retries if a load fails partway through, and monitor for 
+errors, all of which Snowpipe already provides out of the box as a managed service. That's 
+extra engineering time spent recreating something Snowflake already built, tested, and 
+maintains, with more surface area for something to quietly break.
+
+----------------------------------------------------------------------------------------------------------------------------------------
