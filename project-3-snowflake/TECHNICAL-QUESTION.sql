@@ -5,19 +5,15 @@ queries (e.g., strip literals), not individual query IDs. State your credit-esti
 formula/assumption.
 */
 ----------------------------------------------------------------------------------------------------------
+SOLTUION:
 /*
-* Assumed table: SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY
-* Relevant columns used:
-query_text -> the actual SQL text that was run
-warehouse_size -> size of the compute engine used (Small, Medium, Large, etc.)
-execution_time -> how long the query took to run, in milliseconds
-start_time -> when the query started running
-execution_status -> whether it succeeded, failed, or was cancelled
-
 Assumption: grouped queries by the first 50 characters of query_text, since most
 queries share the same structure at the start even when specific values differ.
 Credit estimation: Small = 2 credits/hour, Medium = 4 credits/hour, Large = 8 credits/hour,
 calculated as (execution_time in seconds / 3600) * credits_per_hour.
+
+Tested against a live Snowflake trial account. Returned 10 real rows of account
+activity (project-3-results.pdf).
 */
 
 SELECT
