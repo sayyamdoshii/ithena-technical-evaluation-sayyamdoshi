@@ -12,6 +12,10 @@ Threshold: a warehouse is flagged as thrashing if it has 3 or more usage interva
 within a single hour, where each interval lasted under 5 minutes on average.
 Occasional restarts are normal, but 3+ short-lived intervals in one hour suggests
 the auto-suspend setting is too aggressive for that warehouse's actual usage pattern.
+
+Tested against a live Snowflake trial account. Ran successfully in 520ms, returned
+0 rows, expected, since this trial account has no real warehouse usage history yet
+to produce a genuine thrashing pattern (project-3-results.pdf).
 */
 
 SELECT
