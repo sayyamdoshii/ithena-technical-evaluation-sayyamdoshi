@@ -48,6 +48,8 @@ A real example of a technically correct but misleading dashboard number, a rule 
 
 How to run: `pulldata-for-bi.py` was originally written for Postgres, and is included here tested against a local SQLite database instead, since Postgres wasn't actually running. Install pandas and sqlalchemy (`pip install pandas sqlalchemy`), then run `python3 pulldata-for-bi.py`. It connects to the included `subscriptions.db` file, no setup needed. You should see `Saved 4577 rows to subscriptions_last_900_days.csv` and `(4577, 9)`, followed by a preview of the first 10 rows of real customer data. `project-5-results.pdf` has the full screenshots of this exact run, plus a second run showing the default 30-day window, which returns 0 rows (expected, since the data's dates only go up to mid-2025, not an error). Change the `last_n_days` value at the top of the script to pull a different window yourself. Open `CFO_Summary.twbx` in Tableau Public to view the dashboard.
 
+Note: this was tested against SQLite instead of Postgres, since Postgres wasn't set up locally. The only change needed to point this at a real Postgres or Snowflake database is the connection string in the script, everything else (the query, the parameter, the cleanup, the CSV output) stays exactly the same.
+
 ## What these projects brought me
 Going in, Snowflake was a learning curve for me, and a few Tableau techniques 
 (table calculations, LOD expressions, reference lines) took more trial and error than I 
