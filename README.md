@@ -22,8 +22,7 @@ Underlying data was generated with the included Python scripts
 `python3 <script_name>.py` to regenerate the CSVs if needed.
 
 ## Project 3: Snowflake
-I'd never used Snowflake before this assignment, and had to study the documentation as 
-I went. Covers warehouse scaling, query troubleshooting, the three-layer caching model, 
+Covers warehouse scaling, query troubleshooting, the three-layer caching model, 
 and two SQL queries against Snowflake's system views. Both queries were run against a 
 live Snowflake trial account, one returned real results, the other returned 0 rows 
 (expected on a brand-new account with no usage history). Full details and results are 
