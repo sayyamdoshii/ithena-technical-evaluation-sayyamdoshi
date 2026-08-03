@@ -50,6 +50,11 @@ How to run: `pulldata-for-bi.py` was originally written for Postgres, and is inc
 
 Note: this was tested against SQLite instead of Postgres, since Postgres wasn't set up locally. The only change needed to point this at a real Postgres or Snowflake database is the connection string in the script, everything else (the query, the parameter, the cleanup, the CSV output) stays exactly the same.
 
+
+Note: commands above use python3 and pip3, which work on Mac and Linux. On Windows, use 
+python and pip instead (no "3" at the end). Everything else in the script and the steps 
+stays the same.
+
 ## What these projects brought me
 Going in, Snowflake was a learning curve for me, and a few Tableau techniques 
 (table calculations, LOD expressions, reference lines) took more trial and error than I 
