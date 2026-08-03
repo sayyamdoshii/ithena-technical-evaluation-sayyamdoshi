@@ -3,41 +3,25 @@ QUESTION 24: Write a Python script that connects to Snowflake (or Postgres as a 
 snowflake-connector-python or sqlalchemy, pulls a parameterized query (configurable
 "last N days"), and writes clean output to CSV/Parquet ready for BI consumption.
 """
-
-
 import pandas as pd
 from sqlalchemy import create_engine, text
-
-username = "your_username"
-password = "your_password"
-host = "localhost"
-port = "5432"
-database = "your_database"
-last_n_days = 30
-conn_str = f"postgresql://{username}:{password}@{host}:{port}/{database}"
-engine = create_engine(conn_str)
-
+db_file = "subscriptions.db"
+last_n_days = 900
+connection_string = "sqlite:///" + db_file
+engine = create_engine(connection_string)
+days_ago = "-" + str(last_n_days) + " days"
 query = text("""
 SELECT *
 FROM subscriptions
-WHERE start_date >= CURRENT_DATE - INTERVAL '1 day' * :days
+WHERE start_date >= date('now', :days_ago)
 """)
-
-conn = engine.connect()
-df = pd.read_sql(query, conn, params={"days": last_n_days})
-conn.close()
-
-print(df.shape)
-print(df.head())
+connection = engine.connect()
+df = pd.read_sql(query, connection, params={"days_ago": days_ago})
+connection.close()
 df = df.dropna(how="all")
-
-new_cols = []
-for col in df.columns:
-new_cols.append(col.lower())
-df.columns = new_cols
-
+df.columns = [col.lower() for col in df.columns]
 output_filename = "subscriptions_last_" + str(last_n_days) + "_days.csv"
 df.to_csv(output_filename, index=False)
-
-print("done, saved to", output_filename)
-print("rows:", len(df))
+print("Saved " + str(len(df)) + " rows to " + output_filename)
+print(df.shape)
+print(df.head(10))
