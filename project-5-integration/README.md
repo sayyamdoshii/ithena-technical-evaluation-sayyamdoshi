@@ -9,21 +9,16 @@ pieces: a Python script that pulls data on a schedule, and a one-page executive 
 - `THEORY-QUESTIONS.md`: written answers on misleading dashboard numbers and where to push 
 calculation logic
 - `pulldata-for-bi.py`: parameterized script that connects to a database, pulls the last N 
-days, and saves clean output to CSV. Written for Postgres originally, tested here against a 
-local SQLite database since Postgres wasn't actually running
-- `generate_data.py`: generates the synthetic subscription data used across this project and 
-Project 2. Real subscription data isn't something you can get for an assignment like this 
-since it's sensitive business data, so this creates 5,000 fake customers instead, with 
-realistic patterns like most customers churning earlier and fewer sticking around long term
-- `build_db.py`: loads `subscriptions.csv` into a local SQLite database (`subscriptions.db`), 
-standing in for the Postgres/Snowflake database the script is meant to run against
-- `subscriptions.csv`: the synthetic data itself, 5,000 rows
+days, and saves clean output to CSV. Connects to SQLite here, see the note below for why
+- `subscriptions.db`: SQLite database the script connects to, includes the synthetic 
+subscription data used across this project and Project 2
 - `subscriptions_last_900_days.csv`: real output from running `pulldata-for-bi.py`
-- `project-5-results.pdf`: proof of running the script for real, including both a 0-row 
-result on the default 30-day window (expected, since the data only goes up to mid-2025) and 
-a 4,577-row result once the window was widened, confirming the query logic actually works
-- `CFO_Summary.twbx`: one-page executive dashboard built for a non-technical CFO
-- `CFO_Summary_screenshot.png`: preview of the dashboard without needing to open Tableau
+- `pulldata-for-bi-results.pdf`: proof of running the script for real, including both a 
+0-row result on the default 30-day window (expected, since the data only goes up to 
+mid-2025) and a 4,577-row result once the window was widened, confirming the query logic 
+actually works
+- `CFO Summary.twb`: one-page executive dashboard built for a non-technical CFO
+- `CFO Summary.png`: preview of the dashboard without needing to open Tableau
 
 ## What's covered
 
@@ -42,17 +37,21 @@ currently filtering
 for things that genuinely change based on the viewer's current selection
 
 **Parameterized data pull script (Technical Question 24)**
-- Connects via SQLAlchemy (Postgres as the stand-in for Snowflake, per the assignment's 
-own allowance)
 - "Last N days" is a single variable at the top of the script (`last_n_days`), change that 
-one number and the whole query adjusts, no other part of the script needs to be touched. 
-Testing a different window just means changing that number, saving, and running the script 
-again, it'll automatically save a new CSV named after whatever number was used
+one number and the whole query adjusts, no other part of the script needs to be touched
 - Cleans the output (drops empty rows, standardizes column names) before saving to CSV
-- Actually run against a local SQLite database built from this project's own synthetic data, 
-not just written and left untested. The only change from the Postgres version is the 
-connection string and the date filter syntax, since SQLite doesn't support Postgres's 
-`INTERVAL` syntax. Full run details are in `project-5-results.pdf`
+- Actually run for real against `subscriptions.db`, not just written and left untested
+
+Note: `pulldata-for-bi.py` connects to SQLite, not Postgres. The question allows Postgres 
+as a stand-in for Snowflake, but Postgres wasn't set up locally, so this connects to a 
+local SQLite database (`subscriptions.db`) instead, which is included in this folder. The 
+only change needed to point this at Postgres or Snowflake instead is the connection 
+string, everything else (the query, the parameter, the cleanup, the CSV output) stays 
+the same.
+
+Note: commands above use `python3` and `pip3`, which work on Mac and Linux. On Windows, use 
+`python` and `pip` instead (no "3" at the end). Everything else in the script and the steps 
+stays the same.
 
 **One-page CFO dashboard (Technical Question 25)**
 - One big number (current MRR) plus one trend line, nothing else
