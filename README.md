@@ -56,6 +56,8 @@ python and pip instead (no "3" at the end). Everything else in the script and th
 stays the same.
 
 ## What these projects brought me
-Going in, Snowflake was a learning curve for me, and a few Tableau techniques 
-(table calculations, LOD expressions, reference lines) took more trial and error than I 
-expected. I didn't try to fake my way past the parts I didn't know. Where something
+Going in, Snowflake was a learning curve for me, and a few Tableau techniques (table 
+calculations, LOD expressions, reference lines) took more trial and error than I 
+expected. I didn't try to fake my way past the parts I didn't know. Where something 
+didn't make sense, I looked it up, tested it against real data, and fixed it before 
+moving on.
