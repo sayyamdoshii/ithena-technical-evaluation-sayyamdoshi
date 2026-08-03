@@ -18,7 +18,6 @@ realistic patterns like most customers churning earlier and fewer sticking aroun
 - `build_db.py`: loads `subscriptions.csv` into a local SQLite database (`subscriptions.db`), 
 standing in for the Postgres/Snowflake database the script is meant to run against
 - `subscriptions.csv`: the synthetic data itself, 5,000 rows
-- `subscriptions.db`: SQLite database built from that CSV
 - `subscriptions_last_900_days.csv`: real output from running `pulldata-for-bi.py`
 - `project-5-results.pdf`: proof of running the script for real, including both a 0-row 
 result on the default 30-day window (expected, since the data only goes up to mid-2025) and 
