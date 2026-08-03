@@ -8,7 +8,7 @@ technical questions against it, real results included in project-1-results.docx.
 
 **How to run:** open `TECHNICAL-QUESTIONS.sql` in any SQL editor to review the queries. 
 For the Python function, run `python3 TECHNICAL-PYTHON-QUES.py` after installing 
-pandas (`pip install pandas`). `project-1-results.docx` shows the actual output of each 
+pandas (`pip install pandas`). `project-1-results.pdf` shows the actual output of each 
 query and function run against real sample data, that's the fastest way to see the 
 results without setting anything up yourself.
 
