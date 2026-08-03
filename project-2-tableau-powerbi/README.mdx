@@ -3,10 +3,19 @@
 ## What this is
 Used Tableau Public to dig into subscription data for a fictional SaaS business, 5,000 synthetic customers. Covers retention, revenue retention, and churn.
 
-## Data files
-- `subscriptions.csv` (from `generate_data.py`): customer id, plan tier, start/end dates, MRR, region, acquisition channel, downgrade flag and date
-- `mrr_history.csv` (from `generate_mrr_history.py`): monthly MRR per customer
-- `nrr_waterfall.csv` (from `nrr_waterfall.py`): New/Expansion/Contraction/Churned totals by month
+## Data
+The subscription data used across all three dashboards is synthetic. Real subscription data 
+from an actual company isn't something you can pull off the shelf for an assignment like this, 
+since it's sensitive business data, so it was generated instead using a Python script with 
+randomized but realistic values.
+
+- **subscriptions.csv** — generated via `generate_data.py`. Creates 5,000 fake customers with 
+  a plan tier, region, signup date, cancellation date, and monthly revenue, plus a downgrade 
+  flag and date. Customer tenure is weighted so that most customers churn earlier and fewer 
+  stay a long time, similar to how real subscription retention curves usually look. The script 
+  uses a fixed random seed, so anyone who runs it gets the exact same 5,000 rows.
+- **mrr_history.csv** — generated via `generate_mrr_history.py`. Monthly MRR per customer.
+- **nrr_waterfall.csv** — generated via `nrr_waterfall.py`. Pre-calculated New/Expansion/Contraction/Churned totals per month.
 
 ## What's in the dashboards
 
